@@ -1,5 +1,5 @@
-# 프로젝트 이름
-Simple Chatbot
+# Simple Chatbot
+
 
 ## 프로젝트 목적
 <!--
@@ -12,8 +12,8 @@ Simple Chatbot
 이 프로젝트는 어떻게 작동하는가
 -->
 
-fastapi를 이용해 간단한 챗봇 구현
-참고: https://github.com/ukairia777/tensorflow-nlp-tutorial
+fastapi를 이용해 간단한 챗봇 구현</br>
+참고: https://github.com/ukairia777/tensorflow-nlp-tutorial </br>
 사용 데이터: https://github.com/songys/Chatbot_data
 
 ## 동작 과정
@@ -43,6 +43,11 @@ fastapi를 이용해 간단한 챗봇 구현
 - mysql 8.0.29
 
 ### pip freeze 내역
+
+<details>
+<summary>토글 보기</summary>
+<div markdown="1">
+
 ```
 absl-py==1.0.0
 anyio==3.6.1
@@ -191,12 +196,18 @@ wrapt==1.14.1
 zipp==3.8.0
 ```
 
+</div>
+</details>
+
+
 ## 실행/설치 방법
-- 도커 이미지 만들기 (GPU)
-    - 파이토치 버전은 환경에 맞게 해야함
+- 도커 이미지 만들기 (GPU 환경)
+    - Dockerfile 있는 경로
+    - Dockerfile 수정: 파이토치 버전은 환경에 맞게 해야함
     - `docker create fastapi-tf-torch-gpu`
 
 - 도커 실행
+    - docker-compose.yml 있는 
     - `docker compose up`
 
 - /app/conn에 secrets.json 만들기
