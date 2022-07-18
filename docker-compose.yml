@@ -5,6 +5,7 @@ volumes:
 services:
   db:
     image: mysql
+    container_name: cb_db
     volumes:
       - mysql_volume:/var/lib/mysql
     environment:
@@ -13,7 +14,8 @@ services:
       - "3306:3306"      
 
   fastapi:
-    image: fastapi-tf-torch-gpu
+    image: fastapi-tf-torch-gpu:apt-get-update
+    container_name: cb_pydev
     volumes:
       - fastapi_volume:/app
     ports:
