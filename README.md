@@ -207,7 +207,7 @@ zipp==3.8.0
     - `docker create fastapi-tf-torch-gpu`
 
 - 도커 실행
-    - docker-compose.yml 있는 
+    - docker-compose.yml 있는 경로
     - `docker compose up`
 
 - /app/conn에 secrets.json 만들기
