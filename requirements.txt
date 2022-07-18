@@ -1,0 +1,6 @@
+uvicorn
+fastapi==0.78.0
+SQLAlchemy==1.4.39
+pandas
+numpy
+pydantic==1.9.1
