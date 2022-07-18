@@ -211,46 +211,52 @@ zipp==3.8.0
     - `docker compose up`
 
 - /app/conn에 secrets.json 만들기
-```json
-{
-    "DB":{
-        "name": "mysql+pymysql",
-        "user": "root",
-        "password": "1234",
-        "host": "cb_db",
-        "port": 3306,
-        "dbconn":"test_db"
+    ```json
+    {
+        "DB":{
+            "name": "mysql+pymysql",
+            "user": "root",
+            "password": "1234",
+            "host": "cb_db",
+            "port": 3306,
+            "dbconn":"test_db"
+        }
     }
-}
-```
+    ```
 
 - mysql에 접속해서 test_db 만들기
-
+    ```
+    CREATE DATABASE `test_db` 
+    /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ 
+    /*!80016 DEFAULT ENCRYPTION='N' */
+    ```
 - test_db에 테이블 만들기
-```ddl
--- test_db.small_talk definition
+    ```ddl
+    -- test_db.small_talk definition
 
-CREATE TABLE `small_talk` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `Q` text NOT NULL,
-  `A` text NOT NULL,
-  `embedding` json NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47302 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-```
+    CREATE TABLE `small_talk` (
+      `id` bigint NOT NULL AUTO_INCREMENT,
+      `Q` text NOT NULL,
+      `A` text NOT NULL,
+      `embedding` json NOT NULL,
+      `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=47302 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+    ```
 
-```ddl
-CREATE TABLE `test` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
-  `number` int NOT NULL,
-  `json_data` json DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-```
+    ```ddl
+    -- test_db.test definition
+    
+    CREATE TABLE `test` (
+      `id` bigint NOT NULL AUTO_INCREMENT,
+      `name` text NOT NULL,
+      `number` int NOT NULL,
+      `json_data` json DEFAULT NULL,
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+    ```
 
 - 명령어 실행
     - `uvicorn --host=0.0.0.0 --port 8000 main:app`
