@@ -24,8 +24,12 @@ router = APIRouter(
 
 @router.post("/")
 async def first_post(request: Request):
+    # DB 세션
+    session = request.state.db_conn
 
-    # DB에 이 데이터들 미리 저장시켜두면 좋겠다
+    # 기존 데이터 삭제
+    original_data = session.query(SmallTalk).delete()
+    session.commit()
 
     train_data = urllib.request.urlretrieve("https://raw.githubusercontent.com/songys/Chatbot_data/master/ChatbotData.csv", filename="ChatBotData.csv")
     train_data = pd.read_csv('ChatBotData.csv')
@@ -45,8 +49,6 @@ async def first_post(request: Request):
     print("임베딩 계산 완료")  
     print(len(train_data['embedding'][0].tolist()))
 
-    # DB 세션
-    session = request.state.db_conn
 
     # DB 저장할 준비
     for idx, value in train_data.iterrows():
