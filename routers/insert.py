@@ -30,16 +30,18 @@ async def first_post(request: Request):
     # 기존 데이터 삭제
     original_data = session.query(SmallTalk).delete()
     session.commit()
-
+    
+    # DB에 임베딩 미리 저장시키는 로직
+    # 학습 데이터 불러오기
     train_data = urllib.request.urlretrieve("https://raw.githubusercontent.com/songys/Chatbot_data/master/ChatbotData.csv", filename="ChatBotData.csv")
-    train_data = pd.read_csv('ChatBotData.csv')
-    # train_data = pd.read_csv('ipynb/ChatBotData.csv')
+    # train_data = pd.read_csv('ChatBotData.csv')
+    train_data = pd.read_csv('ipynb/ChatBotData.csv')
     print("read csv 완료")
     print(train_data.head())
 
     # 사전 훈련된 BERT를 로드
     # 한국어도 포함되어 학습된 다국어 모델을 로드
-    model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')
+    model = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS')
     print("model 로드 완료")
 
     # 모든 질문열. 즉, train_data['Q']에 대해서 문장 임베딩 값을 구한 후 embedding이라는 새로운 열에 저장

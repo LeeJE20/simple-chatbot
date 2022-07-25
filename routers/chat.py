@@ -23,7 +23,7 @@ router = APIRouter(
 )
 
 # 모델 불러오기
-model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')
+model = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS')
 
 
 global train_data
@@ -57,14 +57,17 @@ async def return_answer(request: Request, question: str):
             A.append(contents[i].A)
             embedding.append(list(contents[i].embedding))
             
-        train_data = pd.DataFrame({"Q":Q,
-                        "A":A,
+        train_data = pd.DataFrame({"question":Q,
+                        "answer":A,
                         "embedding":embedding})
     # 유저 입력에 대한 임베딩 계산
     q_embedding = model.encode(question)
 
     # 기존 임베딩과 비교하여 가장 유사한 응답 출력
     train_data['score'] = train_data.apply(lambda x: cos_sim(x['embedding'], q_embedding), axis=1)
-    answer = train_data.loc[train_data['score'].idxmax()]['A']
+    answer = train_data.loc[train_data['score'].idxmax()]
+    answer_message = answer['answer']
+    answer_score = answer['score']
+    answer_embedding = answer['embedding']
     print(answer)
     return answer
