@@ -48,18 +48,23 @@ async def return_answer(request: Request, question: str):
     if (train_data.empty):
         contents = session.query(SmallTalk).all()
 
+        if len(contents) == 0:
+            print("읽기 실패")
+            return "읽기 실패"
         Q = []
         A = []
         embedding = []
 
         for i in range(len(contents)):
-            Q.append(contents[i].Q)
-            A.append(contents[i].A)
+            Q.append(contents[i].question)
+            A.append(contents[i].answer)
             embedding.append(list(contents[i].embedding))
             
         train_data = pd.DataFrame({"question":Q,
                         "answer":A,
                         "embedding":embedding})
+
+    
     # 유저 입력에 대한 임베딩 계산
     q_embedding = model.encode(question)
 

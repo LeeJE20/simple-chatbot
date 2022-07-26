@@ -54,10 +54,10 @@ async def first_post(request: Request):
 
     # DB 저장할 준비
     for idx, value in train_data.iterrows():
-        Q = value['Q']
-        A = value['A']
+        question = value['Q']
+        answer = value['A']
         embedding = value['embedding'].tolist()
-        addMemo = SmallTalk(Q=Q, A= A, embedding=embedding)
+        addMemo = SmallTalk(question=question, answer= answer, embedding=embedding)
         session.add(addMemo)
 
     # DB 저장

@@ -41,10 +41,10 @@ CREATE TABLE `small_talk` (
 ) ENGINE=InnoDB AUTO_INCREMENT=47302 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 """
 class SmallTalk(Base):
-    __tablename__ = 'small_talk'
+    __tablename__ = 'chat_train'
     id = Column(BIGINT,nullable=False, autoincrement=True, primary_key=True)
-    Q = Column(TEXT, nullable=False)
-    A = Column(TEXT, nullable=False)
+    question = Column(TEXT, nullable=False)
+    answer = Column(TEXT, nullable=False)
     embedding = Column(JSON, nullable=False)
     # created_at = Column(TIMESTAMP)
     # updated_at = Column(TIMESTAMP)
