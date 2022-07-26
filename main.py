@@ -2,16 +2,17 @@ from fastapi import Depends, FastAPI, Request
 from pydantic import BaseModel
 from conn.db_class import Test, SmallTalk
 from conn.db_conn import engineconn
-
+from sqlalchemy import select
 from typing import List
 
-from routers import items, users, insert, chat
+from routers import items, users, insert, chat, DB_connect_test
 
 app = FastAPI()
 app.include_router(users.router)
 app.include_router(items.router)
 app.include_router(insert.router)
 app.include_router(chat.router)
+app.include_router(DB_connect_test.router)
 
 engine = engineconn()
 session = engine.sessionmaker()
@@ -35,7 +36,9 @@ def first_get():
 
 @app.get("/get")
 async def first_get():
-    example = session.query(Test).all()
+    example = session.execute(
+    select(Test)
+    ).scalars().all()
     print(example)
     print(example[0])
     print(example[0].name)
