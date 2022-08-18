@@ -7,6 +7,19 @@ from typing import List
 
 from routers import items, users, insert, chat, DB_connect_test
 
+import logging
+
+logging.basicConfig()
+logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+# import logging
+# from sql_app.database import SessionLocal, engine
+# from sql_app import models
+
+# logging.basicConfig()
+# logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+
+# models.Base.metadata.create_all(bind=engine)
+
 app = FastAPI()
 app.include_router(users.router)
 app.include_router(items.router)
