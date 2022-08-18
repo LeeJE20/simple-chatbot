@@ -13,8 +13,20 @@ from numpy.linalg import norm
 import urllib.request
 from sentence_transformers import SentenceTransformer
 
+
+from conn.db_conn import engineconn
 class Question(BaseModel):
     question : str
+
+engine = engineconn()
+connection = engine.connection()
+global train_data
+train_data = pd.DataFrame()
+print("데이터 불러오기")
+train_data = pd.read_sql_table('chat_train', connection, columns=["answer", "question", "embedding"])
+print(train_data.head())
+print("데이터 불러오기 끝")
+
 
 router = APIRouter(
     prefix="/chat",
@@ -26,8 +38,8 @@ router = APIRouter(
 model = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS')
 
 
-global train_data
-train_data = pd.DataFrame()
+# global train_data
+# train_data = pd.DataFrame()
 
 # 두 개의 벡터로부터 코사인 유사도를 구하는 함수 cos_sim
 def cos_sim(A, B):
@@ -42,10 +54,11 @@ async def return_answer(request: Request, question: str):
     print(question)
 
     # DB 세션
-    session = request.state.db_conn
+    # session = request.state.db_conn
 
     # train_data가 없으면 DB에서 불러오기   
     if (train_data.empty):
+        print("불러오기")
         contents = session.query(SmallTalk).all()
 
         if len(contents) == 0:
@@ -74,5 +87,6 @@ async def return_answer(request: Request, question: str):
     answer_message = answer['answer']
     answer_score = answer['score']
     answer_embedding = answer['embedding']
+    answer = answer[["answer", "score", "embedding"]]
     print(answer)
     return answer
