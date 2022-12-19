@@ -24,7 +24,7 @@ global train_data
 train_data = pd.DataFrame()
 print("데이터 불러오기")
 train_data = pd.read_sql_table('chat_train', connection, columns=["answer", "question", "embedding"])
-print(train_data.head())
+print(train_data.tail())
 print("데이터 불러오기 끝")
 
 
@@ -58,7 +58,7 @@ async def return_answer(request: Request, question: str):
 
     # train_data가 없으면 DB에서 불러오기   
     if (train_data.empty):
-        print("불러오기")
+        print("train_data가 없으면 DB에서 불러오기   ")
         contents = session.query(SmallTalk).all()
 
         if len(contents) == 0:
@@ -80,13 +80,21 @@ async def return_answer(request: Request, question: str):
     
     # 유저 입력에 대한 임베딩 계산
     q_embedding = model.encode(question)
-
+    print(q_embedding[0])
     # 기존 임베딩과 비교하여 가장 유사한 응답 출력
+
     train_data['score'] = train_data.apply(lambda x: cos_sim(x['embedding'], q_embedding), axis=1)
     answer = train_data.loc[train_data['score'].idxmax()]
     answer_message = answer['answer']
     answer_score = answer['score']
     answer_embedding = answer['embedding']
     answer = answer[["answer", "score", "embedding"]]
+    
+    result = {
+        "answer": answer_message,
+        "score": answer_score, 
+        "embedding": q_embedding.tolist()
+    }
     print(answer)
-    return answer
+    
+    return result
